@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "MLeaksFinder"
-  s.version          = "1.0.0"
+  s.version          = "1.2.0"
   s.summary          = "Find memory leaks in your iOS app at develop time."
 
 # This description is used to generate tags and improve search results.
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/Zepo/MLeaksFinder.git", :tag => s.version }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '6.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'MLeaksFinder/**/*'
   
