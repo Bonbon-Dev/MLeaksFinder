@@ -23,7 +23,7 @@
 
 static NSMutableSet *leakedObjectPtrs;
 
-@interface MLeakedObjectProxy ()<UIAlertViewDelegate>
+@interface MLeakedObjectProxy ()
 @property (nonatomic, weak) id object;
 @property (nonatomic, strong) NSNumber *objectPtr;
 @property (nonatomic, strong) NSArray *viewStack;
@@ -64,8 +64,10 @@ static NSMutableSet *leakedObjectPtrs;
 #if _INTERNAL_MLF_RC_ENABLED
     [MLeaksMessenger alertWithTitle:@"Memory Leak"
                             message:[NSString stringWithFormat:@"%@", proxy.viewStack]
-                           delegate:proxy
-              additionalButtonTitle:@"Retain Cycle"];
+              additionalButtonTitle:@"Retain Cycle"
+            additionalButtonHandler:^{
+        [proxy clickRetainCycleButton];
+    }];
 #else
     [MLeaksMessenger alertWithTitle:@"Memory Leak"
                             message:[NSString stringWithFormat:@"%@", proxy.viewStack]];
@@ -82,13 +84,9 @@ static NSMutableSet *leakedObjectPtrs;
     });
 }
 
-#pragma mark - UIAlertViewDelegate
+#pragma mark - Retain Cycle
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (!buttonIndex) {
-        return;
-    }
-    
+- (void)clickRetainCycleButton {
     id object = self.object;
     if (!object) {
         return;
